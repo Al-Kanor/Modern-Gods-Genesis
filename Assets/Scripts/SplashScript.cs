@@ -3,6 +3,6 @@ using System.Collections;
 
 public class SplashScript : MonoBehaviour {
 	void Start () {
-        Application.LoadLevel ("Loading");
+        Application.LoadLevel ("Level");
 	}
 }
