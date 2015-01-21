@@ -38,9 +38,6 @@ public class PlayerControllerScript : MonoBehaviour {
         // Attaque
         if (Input.GetButtonDown ("Fire1")) {
             //GetComponent<Animation> ().Play ();
-            
-            // Activation de la zone d'impact
-            transform.GetChild (8).gameObject.SetActive (true);
         }
 	}
 }

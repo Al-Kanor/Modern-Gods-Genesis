@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ImpactZoneScript : MonoBehaviour {
+public class BladeScript : MonoBehaviour {
     void OnTriggerEnter (Collider other) {
         GameObject.Destroy (other.gameObject);
     }
