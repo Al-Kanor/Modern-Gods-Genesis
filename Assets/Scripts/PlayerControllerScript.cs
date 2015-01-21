@@ -2,9 +2,9 @@
 using System.Collections;
 
 public class PlayerControllerScript : MonoBehaviour {
-    public float speed = 1000;
-    public float rotationSpeed = 100;
-    public float jumpForce = 100000;
+    public float speed = 40000;
+    public float rotationSpeed = 150;
+    public float jumpForce = 50;
 
 	void Update () {
         // Calcul de la rotation
@@ -23,9 +23,20 @@ public class PlayerControllerScript : MonoBehaviour {
         transform.Rotate (rotation);
         rigidbody.AddForce (move * speed * Time.deltaTime);
 
+        // Animation
+        bool isWalking = false;
+
+        if (Mathf.Abs (v) > 0.01f) {
+            isWalking = true;
+        }
+
+        GetComponent<Animator> ().SetBool ("Walk", isWalking);
+
         // Attaque
         if (Input.GetButtonDown ("Fire1")) {
-            GetComponent<Animation> ().Play ();
+            //GetComponent<Animation> ().Play ();
+            
+            // Activation de la zone d'impact
             transform.GetChild (3).gameObject.SetActive (true);
         }
 	}
