@@ -25,4 +25,8 @@ public class GameManager : MonoBehaviour {
     public void GoToPauseMenu () {
 
     }
+
+    void Start () {
+        Screen.showCursor = false;
+    }
 }
