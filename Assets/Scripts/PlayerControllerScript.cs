@@ -3,15 +3,18 @@ using System.Collections;
 
 public class PlayerControllerScript : MonoBehaviour {
     public float speed = 40000;
-    public float rotationSpeed = 150;
+    public float turnSpeedX = 50;
+    public float turnSpeedY = 150;
     public float jumpForce = 50;
 
 	void Update () {
         // Calcul de la rotation
         float h = Input.GetAxis ("Mouse X");
-        Vector3 rotation = new Vector3 (0, h * rotationSpeed * Time.deltaTime, 0);
+        //float v = Input.GetAxis ("Mouse Y");
+        Vector3 rotation = new Vector3 (0, h * turnSpeedY * Time.deltaTime, 0);
 
         // Calcul du déplacement
+        //h = Input.GetAxis ("Horizontal");
         float v = Input.GetAxis ("Vertical");
         Vector3 move = transform.forward * v;
 
@@ -37,7 +40,7 @@ public class PlayerControllerScript : MonoBehaviour {
             //GetComponent<Animation> ().Play ();
             
             // Activation de la zone d'impact
-            transform.GetChild (3).gameObject.SetActive (true);
+            transform.GetChild (8).gameObject.SetActive (true);
         }
 	}
 }
