@@ -4,9 +4,12 @@ using System.Collections;
 public class GameManager : MonoBehaviour {
     public enum Action {
         END_OF_TURN,
+        MOVE_UNITS,
         THINKING,
         UNIT_IN_PLACEMENT
     };
+
+    public Action action = Action.THINKING;
 
     public GameObject unitInPlacement = null;
 
@@ -30,13 +33,16 @@ public class GameManager : MonoBehaviour {
     }
 
     public void EndOfTurn () {
-        terrain.MoveUnits ();
+        action = Action.MOVE_UNITS;
+        //terrain.MoveUnits ();
         //isP1Turn = !isP1Turn;
         //Camera.main.GetComponent<MainCamera> ().TurnBack ();
     }
 
     void FixedUpdate () {
-        //Debug.Log(action);
+        if (Action.MOVE_UNITS == action) {
+            terrain.MoveUnits ();
+        }
     }
 
     public void GoToBattle () {

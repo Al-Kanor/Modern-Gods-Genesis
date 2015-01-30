@@ -4,20 +4,37 @@ using System.Collections;
 public class Terrain : MonoBehaviour {
     private TileMap tileMap;
 
-    public void MoveUnits () {
-        // Traitement d'abord les plus proches du camp ennemi puis de gauche à droite
-        for (int y = tileMap.nbLines - 1; y >= 0; --y) {
-            for (int x = 0; x < tileMap.nbColumns; ++x) {
-                if (null != tileMap.tiles[x, y].Unit) {
-                    Unit unit = tileMap.tiles[x, y].Unit.GetComponent<Unit> ();
-                    if (unit.IsToP1) {
-                        //tileMap.tiles[x, y].Unit.transform.position += Vector3.forward;
-                        unit.Move ();
-                        
-                        tileMap.tiles[x, y + unit.Moves].Unit = tileMap.tiles[x, y].Unit;
-                        tileMap.tiles[x, y].Unit = null;
-                    }
+    // Attributs de déplacement d'unités
+    private int currentUnitX;
+    private int currentUnitY;
+
+    public void MoveUnits () {        
+        if (null != tileMap.tiles[currentUnitX, currentUnitY].Unit) {
+            Unit unit = tileMap.tiles[currentUnitX, currentUnitY].Unit.GetComponent<Unit> ();
+            if (unit.IsToP1) {
+                Vector3 pos = unit.transform.position;
+                int targetX = currentUnitX;
+                int targetY = currentUnitY + unit.moves;
+                if (targetX >= 0 && targetX < tileMap.nbColumns && targetY >= 0 && targetY < tileMap.nbLines && null == tileMap.tiles[targetX, targetY].Unit) {
+                    unit.Move ();
+
+                    tileMap.tiles[currentUnitX, currentUnitY + unit.Moves].Unit = tileMap.tiles[currentUnitX, currentUnitY].Unit;
+                    tileMap.tiles[currentUnitX, currentUnitY].Unit = null;
                 }
+            }
+        }
+
+        currentUnitX++;
+        
+        if (currentUnitX >= tileMap.nbColumns) {
+            if (currentUnitY <= 0) {
+                GameManager.instance.GetComponent<GameManager>().action = GameManager.Action.END_OF_TURN;
+                currentUnitX = 0;
+                currentUnitY = tileMap.nbLines - 1;
+            }
+            else {
+                currentUnitX = 0;
+                currentUnitY--;
             }
         }
     }
@@ -44,5 +61,7 @@ public class Terrain : MonoBehaviour {
 
     void Start () {
         tileMap = new TileMap(5, 10);
+        currentUnitX = 0;
+        currentUnitY = tileMap.nbLines - 1;
     }
 }
