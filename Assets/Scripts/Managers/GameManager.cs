@@ -2,15 +2,20 @@
 using System.Collections;
 
 public class GameManager : MonoBehaviour {
-    //public enum State { };
     public enum Action {
+        END_OF_TURN,
         THINKING,
         UNIT_IN_PLACEMENT
     };
 
-    //public Action action = Action.THINKING;
-
     public GameObject unitInPlacement = null;
+
+    private bool isP1Turn = true;
+    private Terrain terrain;
+
+    public bool IsP1Turn {
+        get { return isP1Turn; }
+    }
 
     // Singleton
     static GameManager m_instance;
@@ -24,7 +29,13 @@ public class GameManager : MonoBehaviour {
         DontDestroyOnLoad (this);
     }
 
-    public void FixedUpdate () {
+    public void EndOfTurn () {
+        terrain.MoveUnits ();
+        isP1Turn = !isP1Turn;
+        Camera.main.GetComponent<MainCamera> ().TurnBack ();
+    }
+
+    void FixedUpdate () {
         //Debug.Log(action);
     }
 
@@ -41,6 +52,6 @@ public class GameManager : MonoBehaviour {
     }
 
     void Start () {
-        //Screen.showCursor = false;
+        terrain = GameObject.Find ("Terrain").GetComponent<Terrain> ();
     }
 }

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Tile {
     private int x { get; set; }
-    private int y { get; set;  }
+    private int y { get; set; }
     //private int width { get; set;  }
     //private int height { get; set; }
     private GameObject unit;    // Unité ou bâtiment sur la case

@@ -11,5 +11,6 @@ public class Card : MonoBehaviour {
         //GameManager.instance.action = GameManager.Action.UNIT_IN_PLACEMENT;
         GameManager.instance.unitInPlacement = unit;
         gameObject.SetActive (false);
+        Camera.main.GetComponent<Camera> ().orthographic = true;
     }
 }
