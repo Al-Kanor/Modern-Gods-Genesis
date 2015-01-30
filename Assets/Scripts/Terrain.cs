@@ -8,10 +8,15 @@ public class Terrain : MonoBehaviour {
         // Traitement d'abord les plus proches du camp ennemi puis de gauche à droite
         for (int y = tileMap.nbLines - 1; y >= 0; --y) {
             for (int x = 0; x < tileMap.nbColumns; ++x) {
-                if (null != tileMap.tiles[x, y].Unit && tileMap.tiles[x, y].Unit.GetComponent<Unit>().IsToP1) {
-                    tileMap.tiles[x, y].Unit.transform.position += new Vector3 (0, 0, 1);
-                    tileMap.tiles[x, y + 1].Unit = tileMap.tiles[x, y].Unit;
-                    tileMap.tiles[x, y].Unit = null;
+                if (null != tileMap.tiles[x, y].Unit) {
+                    Unit unit = tileMap.tiles[x, y].Unit.GetComponent<Unit> ();
+                    if (unit.IsToP1) {
+                        //tileMap.tiles[x, y].Unit.transform.position += Vector3.forward;
+                        unit.Move ();
+                        
+                        tileMap.tiles[x, y + unit.Moves].Unit = tileMap.tiles[x, y].Unit;
+                        tileMap.tiles[x, y].Unit = null;
+                    }
                 }
             }
         }

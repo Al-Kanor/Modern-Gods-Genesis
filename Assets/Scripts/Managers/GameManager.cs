@@ -31,8 +31,8 @@ public class GameManager : MonoBehaviour {
 
     public void EndOfTurn () {
         terrain.MoveUnits ();
-        isP1Turn = !isP1Turn;
-        Camera.main.GetComponent<MainCamera> ().TurnBack ();
+        //isP1Turn = !isP1Turn;
+        //Camera.main.GetComponent<MainCamera> ().TurnBack ();
     }
 
     void FixedUpdate () {
