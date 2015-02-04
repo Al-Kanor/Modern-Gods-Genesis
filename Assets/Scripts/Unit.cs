@@ -10,6 +10,8 @@ public class Unit : Placeable {
     #endregion
 
     #region Attributs privés
+    private bool isVeteran = false;
+
     // Déplacement
     public float speed = 1f;    // Vitesse de déplacement
     private Vector3 startPos;
