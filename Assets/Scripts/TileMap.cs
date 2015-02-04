@@ -6,8 +6,8 @@ public class TileMap {
     public int nbLines;
     public int nbColumns;
 
-    public void PlaceUnit(GameObject unit, int line, int column) {
-        tiles[line, column].Unit = unit;
+    public void PlacePlaceable(GameObject placeable, int line, int column) {
+        tiles[line, column].Placeable = placeable;
     }
 
     public TileMap (int _nbColumns, int _nbLines) {

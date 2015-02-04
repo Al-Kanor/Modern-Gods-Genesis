@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Unit : MonoBehaviour {
+public class Unit : Placeable {
     #region Attributs publics
     public int strenght = 1;    // Force
     public int moves = 1; // Nombre de cases parcourues par tour ("vitesse" sur la carte)
@@ -10,9 +10,6 @@ public class Unit : MonoBehaviour {
     #endregion
 
     #region Attributs privés
-    private bool isPlaced = false;
-    private bool isToP1;
-
     // Déplacement
     public float speed = 1f;    // Vitesse de déplacement
     private Vector3 startPos;
@@ -25,15 +22,6 @@ public class Unit : MonoBehaviour {
     #region Accesseurs
     public bool IsInMovement {
         get { return isInMovement; }
-    }
-
-    public bool IsPlaced {
-        get { return isPlaced; }
-        set { isPlaced = value; }
-    }
-
-    public bool IsToP1 {
-        get { return isToP1; }
     }
 
     public int Moves {
@@ -52,15 +40,8 @@ public class Unit : MonoBehaviour {
     #endregion
 
     #region Méthodes privées
-    void Clamp () {
-        transform.position = new Vector3 (
-            Mathf.Round (transform.position.x),
-            transform.position.y,
-            Mathf.Round (transform.position.z)
-        );
-    }
-
-    void FixedUpdate () {
+    
+    override protected void FixedUpdate () {
         if (isInMovement) {
             float distCovered = (Time.time - startTime) * speed * Time.fixedDeltaTime;
             float fracJourney = distCovered / journeyLength;
@@ -72,14 +53,8 @@ public class Unit : MonoBehaviour {
                 isInMovement = false;
             }
         }
-        else if (!isPlaced) {
-            transform.position = InputManager.MouseWorldPosition ();
-            Clamp ();
-        }
-    }
 
-    void Start () {
-        isToP1 = GameManager.instance.GetComponent<GameManager> ().IsP1Turn;
+        base.FixedUpdate ();
     }
     #endregion
 }
