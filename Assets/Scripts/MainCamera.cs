@@ -51,8 +51,8 @@ public class MainCamera : MonoBehaviour {
     }
 
     void Start () {
-        boundX = 10;
-        boundZ = 10;
+        boundX = 2;
+        boundZ = 5;
 
         /*rotation = new Vector3 (0, 0, 180);
         startRotation = transform.rotation;
