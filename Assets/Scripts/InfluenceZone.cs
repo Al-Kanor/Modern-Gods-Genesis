@@ -2,8 +2,11 @@
 using System.Collections;
 
 public class InfluenceZone : MonoBehaviour {
+    #region Attributs privés
     private Terrain terrain;
+    #endregion
 
+    #region Méthodes privées
     void OnMouseDown () {
         GameObject unit = GameManager.instance.unitInPlacement;
 
@@ -15,4 +18,5 @@ public class InfluenceZone : MonoBehaviour {
     void Start () {
         terrain = GameObject.Find ("Terrain").GetComponent<Terrain> ();
     }
+    #endregion
 }

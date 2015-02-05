@@ -2,10 +2,15 @@
 using System.Collections;
 
 public class Card : MonoBehaviour {
+    #region Attributs publics
     public GameObject unitPrefab;
+    #endregion
 
+    #region Attribut privés
     private Terrain terrain;
+    #endregion
 
+    #region Méthodes privées
     void OnMouseDown() {
         GameObject unit = (GameObject) Instantiate(unitPrefab, InputManager.MouseWorldPosition(), Quaternion.identity);
         unit.GetComponent<Unit> ().card = gameObject;
@@ -20,4 +25,5 @@ public class Card : MonoBehaviour {
     void Start () {
         terrain = GameObject.Find ("Terrain").GetComponent<Terrain> ();
     }
+    #endregion
 }

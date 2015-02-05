@@ -2,10 +2,13 @@
 using System.Collections;
 
 public class TileMap {
+    #region Attributs publics
     public Tile[,] tiles;
     public int nbLines;
     public int nbColumns;
+    #endregion
 
+    #region Méthodes publiques
     public void PlacePlaceable(GameObject placeable, int line, int column) {
         tiles[line, column].Placeable = placeable;
     }
@@ -21,4 +24,5 @@ public class TileMap {
             }
         }
     }
+    #endregion
 }

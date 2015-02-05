@@ -2,21 +2,24 @@
 using System.Collections;
 
 public class MainCamera : MonoBehaviour {
+    #region Attributs publics
     public float speed = 10;
+    #endregion
 
+    #region Attributs privés
     private float boundX;
     private float boundZ;
+    #endregion
 
-    /*public float turnSpeed = 10;
-    
-    private bool isInTurn = false;
-    private Quaternion startRotation;
-    private Quaternion endRotation;
-    private Quaternion incRotation;
-    private Vector3 rotation;
-    */
+    #region Méthodes publiques
+    public void TurnBack () {
+        /*endRotation = endRotation * incRotation;
+        isInTurn = true;*/
+    }
+    #endregion
 
-	void FixedUpdate () {
+    #region Méthodes privées
+    void FixedUpdate () {
         #region Déplacement
         float h = 0;
         float v = 0;
@@ -59,9 +62,5 @@ public class MainCamera : MonoBehaviour {
         endRotation = transform.rotation;
         incRotation = Quaternion.Euler (rotation);*/
     }
-
-    public void TurnBack () {
-        /*endRotation = endRotation * incRotation;
-        isInTurn = true;*/
-    }
+    #endregion
 }

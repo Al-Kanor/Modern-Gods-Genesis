@@ -41,8 +41,7 @@ public class Unit : Placeable {
     }
     #endregion
 
-    #region Méthodes privées
-    
+    #region Méthodes protégées
     override protected void FixedUpdate () {
         if (isInMovement) {
             float distCovered = (Time.time - startTime) * speed * Time.fixedDeltaTime;

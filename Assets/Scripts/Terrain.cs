@@ -2,40 +2,28 @@
 using System.Collections;
 
 public class Terrain : MonoBehaviour {
+    #region Attributs publics
     public GameObject SanctuaryPrefab;
     public GameObject InfluenceZonePrefab;
+    #endregion
 
+    #region Attributs privés
     private TileMap tileMap;
-
-    // Attributs de déplacement d'unités
     private int currentUnitX;
     private int currentUnitY;
+    #endregion
 
+    #region Méthodes publiques
     public void ActivateInfluenceZones () {
         ToggleInfluenceZones ();
     }
-
-    void CreateInfluenceZones (GameObject building) {
-        for (int i = 0; i < building.GetComponent<Building> ().influence; ++i) {
-            for (int x = -1; x <= 1; ++x) {
-                for (int z = -1; z <= 1; ++z) {
-                    if (x != 0 || z != 0) {
-                        GameObject influenceZone = (GameObject) Instantiate (
-                            InfluenceZonePrefab, building.transform.position + new Vector3 (x, 0, z), Quaternion.identity
-                        );
-                        influenceZone.transform.SetParent (building.transform.GetChild(0));
-                    }
-                }
-            }
-        }
-    }
-
+    
     public void DesactivateInfluenceZones () {
         ToggleInfluenceZones (false);
     }
 
     public void MoveUnits () {
-        if (null != tileMap.tiles[currentUnitX, currentUnitY].Placeable && null != tileMap.tiles[currentUnitX, currentUnitY].Placeable.GetComponent<Unit>()) {
+        if (null != tileMap.tiles[currentUnitX, currentUnitY].Placeable && null != tileMap.tiles[currentUnitX, currentUnitY].Placeable.GetComponent<Unit> ()) {
             Unit unit = tileMap.tiles[currentUnitX, currentUnitY].Placeable.GetComponent<Unit> ();
             if (unit.IsToP1) {
                 Vector3 pos = unit.transform.position;
@@ -51,10 +39,10 @@ public class Terrain : MonoBehaviour {
         }
 
         currentUnitX++;
-        
+
         if (currentUnitX >= tileMap.nbColumns) {
             if (currentUnitY <= 0) {
-                GameManager.instance.GetComponent<GameManager>().action = GameManager.Action.END_OF_TURN;
+                GameManager.instance.GetComponent<GameManager> ().action = GameManager.Action.END_OF_TURN;
                 currentUnitX = 0;
                 currentUnitY = tileMap.nbLines - 1;
             }
@@ -76,15 +64,32 @@ public class Terrain : MonoBehaviour {
         if (null != placeable.GetComponent<Unit> ()) {
             placeable.GetComponent<Unit> ().card.SetActive (true);
         }
-        
+
         GameManager.instance.unitInPlacement = null;
         Camera.main.GetComponent<Camera> ().orthographic = false;
         DesactivateInfluenceZones ();
     }
+    #endregion
+
+    #region Méthodes privées
+    void CreateInfluenceZones (GameObject building) {
+        for (int i = 0; i < building.GetComponent<Building> ().influence; ++i) {
+            for (int x = -1; x <= 1; ++x) {
+                for (int z = -1; z <= 1; ++z) {
+                    if (x != 0 || z != 0) {
+                        GameObject influenceZone = (GameObject) Instantiate (
+                            InfluenceZonePrefab, building.transform.position + new Vector3 (x, 0, z), Quaternion.identity
+                        );
+                        influenceZone.transform.SetParent (building.transform.GetChild(0));
+                    }
+                }
+            }
+        }
+    }
 
     void Start () {
         // Création du TileMap
-        tileMap = new TileMap(5, 10);
+        tileMap = new TileMap (5, 10);
         currentUnitX = 0;
         currentUnitY = tileMap.nbLines - 1;
 
@@ -97,7 +102,7 @@ public class Terrain : MonoBehaviour {
         CreateInfluenceZones (sanctuaryP2);
     }
 
-    private void ToggleInfluenceZones (bool activate = true) {
+    void ToggleInfluenceZones (bool activate = true) {
         for (int i = 0; i < tileMap.nbColumns; ++i) {
             for (int j = 0; j < tileMap.nbLines; ++j) {
                 GameObject placeable = tileMap.tiles[i, j].Placeable;
@@ -107,4 +112,5 @@ public class Terrain : MonoBehaviour {
             }
         }
     }
+    #endregion
 }
