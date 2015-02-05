@@ -36,15 +36,13 @@ public class Terrain : MonoBehaviour {
 
     #region Méthodes privées
     void CreateInfluenceZones (GameObject building) {
-        for (int i = 0; i < building.GetComponent<Building> ().influence; ++i) {
-            for (int x = -1; x <= 1; ++x) {
-                for (int z = -1; z <= 1; ++z) {
-                    if (x != 0 || z != 0) {
-                        GameObject influenceZone = (GameObject) Instantiate (
-                            InfluenceZonePrefab, building.transform.position + new Vector3 (x, 0, z), Quaternion.identity
-                        );
-                        //influenceZone.transform.SetParent (building.transform.GetChild(0));
-                    }
+        int influence = building.GetComponent<Building> ().influence;
+        for (int x = -influence; x <= influence; ++x) {
+            for (int z = -influence; z <= influence; ++z) {
+                if (x != 0 || z != 0) {
+                    GameObject influenceZone = (GameObject) Instantiate (
+                        InfluenceZonePrefab, building.transform.position + new Vector3 (x, 0, z), Quaternion.identity
+                    );
                 }
             }
         }

@@ -79,7 +79,10 @@ public class GameManager : MonoBehaviour {
 
     #region Méthodes privées
     void FixedUpdate () {
-        
+        Debug.Log (action);
+        if (ActionEnum.END_OF_TURN == action) {
+            Action = ActionEnum.THINKING;
+        }
     }
     #endregion
 }

@@ -26,7 +26,7 @@ public class Placeable : MonoBehaviour {
     }
 
      virtual protected void FixedUpdate () {
-         if (GameManager.ActionEnum.UNIT_IN_PLACEMENT == GameManager.instance.Action) {
+         if (GameManager.ActionEnum.UNIT_IN_PLACEMENT == GameManager.instance.Action && gameObject == GameManager.instance.unitInPlacement) {
             transform.position = InputManager.MouseWorldPosition ();
             Clamp ();
         }
