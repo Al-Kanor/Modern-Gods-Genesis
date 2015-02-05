@@ -2,7 +2,9 @@
 using System.Collections;
 
 public class SplashStarter : MonoBehaviour {
-	void Start () {
+    #region Méthodes privées
+    void Start () {
         Application.LoadLevel ("TestMap");
-	}
+    }
+    #endregion
 }

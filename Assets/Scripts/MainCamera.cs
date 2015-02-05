@@ -12,10 +12,6 @@ public class MainCamera : MonoBehaviour {
     #endregion
 
     #region Méthodes publiques
-    public void TurnBack () {
-        /*endRotation = endRotation * incRotation;
-        isInTurn = true;*/
-    }
     #endregion
 
     #region Méthodes privées
@@ -40,27 +36,11 @@ public class MainCamera : MonoBehaviour {
 
         gameObject.transform.Translate (new Vector3 (h, v, 0) * speed * Time.deltaTime);
         #endregion
-        
-        #region Rotation
-        /*if (isInTurn) {
-            transform.rotation = Quaternion.Lerp (transform.rotation, endRotation, Time.fixedDeltaTime * turnSpeed);
-            
-            // Fin de la rotation
-            if (Mathf.Abs(transform.rotation.y - endRotation.y) <= 0.0001f) {
-                isInTurn = false;
-            }
-        }*/
-        #endregion
     }
 
     void Start () {
         boundX = 2;
         boundZ = 5;
-
-        /*rotation = new Vector3 (0, 0, 180);
-        startRotation = transform.rotation;
-        endRotation = transform.rotation;
-        incRotation = Quaternion.Euler (rotation);*/
     }
     #endregion
 }

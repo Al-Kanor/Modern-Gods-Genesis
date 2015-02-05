@@ -3,16 +3,10 @@ using System.Collections;
 
 public class Placeable : MonoBehaviour {
     #region Attributs privés
-    private bool isPlaced = false;
     private bool isToP1;
     #endregion
 
     #region Accesseurs
-    public bool IsPlaced {
-        get { return isPlaced; }
-        set { isPlaced = value; }
-    }
-
     public bool IsToP1 {
         get { return isToP1; }
     }
@@ -32,7 +26,7 @@ public class Placeable : MonoBehaviour {
     }
 
      virtual protected void FixedUpdate () {
-        if (!isPlaced) {
+         if (GameManager.ActionEnum.UNIT_IN_PLACEMENT == GameManager.instance.Action) {
             transform.position = InputManager.MouseWorldPosition ();
             Clamp ();
         }

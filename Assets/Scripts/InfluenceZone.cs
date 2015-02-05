@@ -2,21 +2,14 @@
 using System.Collections;
 
 public class InfluenceZone : MonoBehaviour {
-    #region Attributs privés
-    private Terrain terrain;
+    #region Attribut privés
+    private bool isToP1 = false;
+    private bool isToP2 = false;
     #endregion
 
-    #region Méthodes privées
-    void OnMouseDown () {
-        GameObject unit = GameManager.instance.unitInPlacement;
-
-        if (null != unit) {
-            terrain.PlaceInTileMap (unit);
-        }
-    }
-
-    void Start () {
-        terrain = GameObject.Find ("Terrain").GetComponent<Terrain> ();
+    #region Méthodes publiques
+    public bool IsActive () {
+        return isToP1 || isToP2;
     }
     #endregion
 }

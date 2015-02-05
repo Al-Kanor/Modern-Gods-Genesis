@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class InputManager : MonoBehaviour {
-    // Singleton
+    #region Singleton
     static InputManager m_instance;
     static public InputManager instance { get { return m_instance; } }
 
@@ -13,11 +13,14 @@ public class InputManager : MonoBehaviour {
 
         DontDestroyOnLoad(this);
     }
-    
+    #endregion
+
+    #region Méthodes publiques
     public static Vector3 MouseWorldPosition () {
         Vector3 pos = Input.mousePosition;
         pos.z = 9.5f;
         pos = Camera.main.ScreenToWorldPoint(pos);
         return pos;
     }
+    #endregion
 }

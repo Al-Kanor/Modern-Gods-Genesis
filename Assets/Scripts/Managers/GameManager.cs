@@ -3,7 +3,7 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour {
     #region Enum publics
-    public enum Action {
+    public enum ActionEnum {
         END_OF_TURN,
         MOVE_UNITS,
         THINKING,
@@ -12,16 +12,34 @@ public class GameManager : MonoBehaviour {
     #endregion
 
     #region Attributs publics
-    public Action action = Action.THINKING;
     public GameObject unitInPlacement = null;
     #endregion
 
     #region Attributs privés
+    private ActionEnum action = ActionEnum.THINKING;
     private bool isP1Turn = true;
-    private Terrain terrain;
     #endregion
 
     #region Accesseurs
+    public ActionEnum Action {
+        get { return action; }
+        set {
+            switch (value) {
+                case ActionEnum.THINKING:
+                    unitInPlacement = null;
+                    Camera.main.GetComponent<Camera> ().orthographic = false;
+                    Terrain.instance.DesactivateInfluenceZones ();
+                    break;
+                case ActionEnum.UNIT_IN_PLACEMENT:
+                    Camera.main.GetComponent<Camera> ().orthographic = true;
+                    Terrain.instance.ActivateInfluenceZones ();
+                    break;
+            }
+
+            action = value;
+        }
+    }
+
     public bool IsP1Turn {
         get { return isP1Turn; }
     }
@@ -42,10 +60,7 @@ public class GameManager : MonoBehaviour {
 
     #region Méthodes publiques
     public void EndOfTurn () {
-        action = Action.MOVE_UNITS;
-        //terrain.MoveUnits ();
-        //isP1Turn = !isP1Turn;
-        //Camera.main.GetComponent<MainCamera> ().TurnBack ();
+        Action = ActionEnum.MOVE_UNITS;
     }
 
     public void GoToBattle () {
@@ -64,13 +79,7 @@ public class GameManager : MonoBehaviour {
 
     #region Méthodes privées
     void FixedUpdate () {
-        if (Action.MOVE_UNITS == action) {
-            terrain.MoveUnits ();
-        }
-    }
-   
-    void Start () {
-        terrain = GameObject.Find ("Terrain").GetComponent<Terrain> ();
+        
     }
     #endregion
 }

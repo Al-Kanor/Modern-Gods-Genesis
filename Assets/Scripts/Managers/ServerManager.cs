@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class ServerManager : MonoBehaviour {
-    // Singleton
+    #region Singleton
     static ServerManager m_instance;
     static public ServerManager instance { get { return m_instance; } }
 
@@ -13,4 +13,5 @@ public class ServerManager : MonoBehaviour {
 
         DontDestroyOnLoad (this);
     }
+    #endregion
 }

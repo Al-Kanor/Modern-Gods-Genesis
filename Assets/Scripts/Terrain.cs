@@ -13,16 +13,50 @@ public class Terrain : MonoBehaviour {
     private int currentUnitY;
     #endregion
 
+    #region Singleton
+    static Terrain m_instance;
+    static public Terrain instance { get { return m_instance; } }
+
+    void Awake () {
+        if (null == instance) {
+            m_instance = this;
+        }
+    }
+    #endregion
+
     #region Méthodes publiques
     public void ActivateInfluenceZones () {
-        ToggleInfluenceZones ();
+        ToggleInfluenceZones (true);
     }
-    
+
     public void DesactivateInfluenceZones () {
         ToggleInfluenceZones (false);
     }
+    #endregion
 
-    public void MoveUnits () {
+    #region Méthodes privées
+    void CreateInfluenceZones (GameObject building) {
+        for (int i = 0; i < building.GetComponent<Building> ().influence; ++i) {
+            for (int x = -1; x <= 1; ++x) {
+                for (int z = -1; z <= 1; ++z) {
+                    if (x != 0 || z != 0) {
+                        GameObject influenceZone = (GameObject) Instantiate (
+                            InfluenceZonePrefab, building.transform.position + new Vector3 (x, 0, z), Quaternion.identity
+                        );
+                        //influenceZone.transform.SetParent (building.transform.GetChild(0));
+                    }
+                }
+            }
+        }
+    }
+
+    void FixedUpdate () {
+        if (GameManager.ActionEnum.MOVE_UNITS == GameManager.instance.Action) {
+            MoveUnits ();
+        }
+    }
+
+    void MoveUnits () {
         if (null != tileMap.tiles[currentUnitX, currentUnitY].Placeable && null != tileMap.tiles[currentUnitX, currentUnitY].Placeable.GetComponent<Unit> ()) {
             Unit unit = tileMap.tiles[currentUnitX, currentUnitY].Placeable.GetComponent<Unit> ();
             if (unit.IsToP1) {
@@ -42,7 +76,7 @@ public class Terrain : MonoBehaviour {
 
         if (currentUnitX >= tileMap.nbColumns) {
             if (currentUnitY <= 0) {
-                GameManager.instance.GetComponent<GameManager> ().action = GameManager.Action.END_OF_TURN;
+                GameManager.instance.GetComponent<GameManager> ().Action = GameManager.ActionEnum.END_OF_TURN;
                 currentUnitX = 0;
                 currentUnitY = tileMap.nbLines - 1;
             }
@@ -54,36 +88,24 @@ public class Terrain : MonoBehaviour {
     }
 
     // Place l'objet en paramètre dans le TileMap
-    public void PlaceInTileMap (GameObject placeable) {
+    void PlaceInTileMap (GameObject placeable) {
         // Conversion world position => TileMap position
         int x = (int)Mathf.Round (placeable.transform.position.x);
         int y = (int)Mathf.Round (placeable.transform.position.z);  // Attention le y dans le TileMap correpond au z en world
-        tileMap.PlacePlaceable (placeable, x, y);
-        placeable.GetComponent<Placeable> ().IsPlaced = true;
+        tileMap.Place (placeable, x, y);
 
         if (null != placeable.GetComponent<Unit> ()) {
             placeable.GetComponent<Unit> ().card.SetActive (true);
         }
 
-        GameManager.instance.unitInPlacement = null;
-        Camera.main.GetComponent<Camera> ().orthographic = false;
-        DesactivateInfluenceZones ();
+        GameManager.instance.Action = GameManager.ActionEnum.THINKING;
     }
-    #endregion
+    
+    void OnMouseDown () {
+        GameObject unit = GameManager.instance.unitInPlacement;
 
-    #region Méthodes privées
-    void CreateInfluenceZones (GameObject building) {
-        for (int i = 0; i < building.GetComponent<Building> ().influence; ++i) {
-            for (int x = -1; x <= 1; ++x) {
-                for (int z = -1; z <= 1; ++z) {
-                    if (x != 0 || z != 0) {
-                        GameObject influenceZone = (GameObject) Instantiate (
-                            InfluenceZonePrefab, building.transform.position + new Vector3 (x, 0, z), Quaternion.identity
-                        );
-                        influenceZone.transform.SetParent (building.transform.GetChild(0));
-                    }
-                }
-            }
+        if (null != unit) {
+            PlaceInTileMap (unit);
         }
     }
 
@@ -102,12 +124,12 @@ public class Terrain : MonoBehaviour {
         CreateInfluenceZones (sanctuaryP2);
     }
 
-    void ToggleInfluenceZones (bool activate = true) {
+    void ToggleInfluenceZones (bool activate) {
         for (int i = 0; i < tileMap.nbColumns; ++i) {
             for (int j = 0; j < tileMap.nbLines; ++j) {
                 GameObject placeable = tileMap.tiles[i, j].Placeable;
                 if (null != placeable && null != placeable.GetComponent<Building> ()) {
-                    tileMap.tiles[i, j].Placeable.transform.GetChild (0).gameObject.SetActive (activate);
+                    //tileMap.tiles[i, j].Placeable.transform.GetChild (0).gameObject.SetActive (activate);
                 }
             }
         }

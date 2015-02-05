@@ -9,7 +9,7 @@ public class TileMap {
     #endregion
 
     #region Méthodes publiques
-    public void PlacePlaceable(GameObject placeable, int line, int column) {
+    public void Place(GameObject placeable, int line, int column) {
         tiles[line, column].Placeable = placeable;
     }
 
@@ -20,7 +20,7 @@ public class TileMap {
         tiles = new Tile[nbColumns, nbLines];
         for (int x = 0; x < nbColumns; ++x) {
             for (int y = 0; y < nbLines; ++y) {
-                tiles[x, y] = new Tile(0, 0);
+                tiles[x, y] = new Tile();
             }
         }
     }
