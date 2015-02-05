@@ -18,6 +18,10 @@ public class Placeable : MonoBehaviour {
     }
     #endregion
 
+    #region Méthodes publiques
+    
+    #endregion
+
     #region Méthodes privées
     void Clamp () {
         transform.position = new Vector3 (

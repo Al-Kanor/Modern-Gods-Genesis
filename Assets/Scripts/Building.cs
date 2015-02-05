@@ -10,4 +10,8 @@ public class Building : Placeable {
     #region Attributs privés
     private bool isOverloaded = false;
     #endregion
+
+    #region Méthodes publiques
+    
+    #endregion
 }

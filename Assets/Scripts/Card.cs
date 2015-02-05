@@ -3,7 +3,9 @@ using System.Collections;
 
 public class Card : MonoBehaviour {
     public GameObject unitPrefab;
-    
+
+    private Terrain terrain;
+
     void OnMouseDown() {
         GameObject unit = (GameObject) Instantiate(unitPrefab, InputManager.MouseWorldPosition(), Quaternion.identity);
         unit.GetComponent<Unit> ().card = gameObject;
@@ -12,5 +14,10 @@ public class Card : MonoBehaviour {
         GameManager.instance.unitInPlacement = unit;
         gameObject.SetActive (false);
         Camera.main.GetComponent<Camera> ().orthographic = true;
+        terrain.ActivateInfluenceZones ();
+    }
+
+    void Start () {
+        terrain = GameObject.Find ("Terrain").GetComponent<Terrain> ();
     }
 }

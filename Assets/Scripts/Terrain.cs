@@ -3,12 +3,36 @@ using System.Collections;
 
 public class Terrain : MonoBehaviour {
     public GameObject SanctuaryPrefab;
+    public GameObject InfluenceZonePrefab;
 
     private TileMap tileMap;
 
     // Attributs de déplacement d'unités
     private int currentUnitX;
     private int currentUnitY;
+
+    public void ActivateInfluenceZones () {
+        ToggleInfluenceZones ();
+    }
+
+    void CreateInfluenceZones (GameObject building) {
+        for (int i = 0; i < building.GetComponent<Building> ().influence; ++i) {
+            for (int x = -1; x <= 1; ++x) {
+                for (int z = -1; z <= 1; ++z) {
+                    if (x != 0 || z != 0) {
+                        GameObject influenceZone = (GameObject) Instantiate (
+                            InfluenceZonePrefab, building.transform.position + new Vector3 (x, 0, z), Quaternion.identity
+                        );
+                        influenceZone.transform.SetParent (building.transform.GetChild(0));
+                    }
+                }
+            }
+        }
+    }
+
+    public void DesactivateInfluenceZones () {
+        ToggleInfluenceZones (false);
+    }
 
     public void MoveUnits () {
         if (null != tileMap.tiles[currentUnitX, currentUnitY].Placeable && null != tileMap.tiles[currentUnitX, currentUnitY].Placeable.GetComponent<Unit>()) {
@@ -41,24 +65,21 @@ public class Terrain : MonoBehaviour {
         }
     }
 
-    void OnMouseDown () {
-        GameObject unit = GameManager.instance.unitInPlacement;
-
-        if (null != unit) {
-            PlaceUnitInTileMap (unit);
-            unit.GetComponent<Unit> ().card.SetActive (true);
-            GameManager.instance.unitInPlacement = null;
-            Camera.main.GetComponent<Camera> ().orthographic = false;
-        }
-    }
-
     // Place l'objet en paramètre dans le TileMap
-    void PlaceUnitInTileMap (GameObject unit) {
+    public void PlaceInTileMap (GameObject placeable) {
         // Conversion world position => TileMap position
-        int x = (int) Mathf.Round (unit.transform.position.x);
-        int y = (int) Mathf.Round (unit.transform.position.z);  // Attention le y dans le TileMap correpond au z en world
-        tileMap.PlacePlaceable (unit, x, y);
-        unit.GetComponent<Placeable> ().IsPlaced = true;
+        int x = (int)Mathf.Round (placeable.transform.position.x);
+        int y = (int)Mathf.Round (placeable.transform.position.z);  // Attention le y dans le TileMap correpond au z en world
+        tileMap.PlacePlaceable (placeable, x, y);
+        placeable.GetComponent<Placeable> ().IsPlaced = true;
+
+        if (null != placeable.GetComponent<Unit> ()) {
+            placeable.GetComponent<Unit> ().card.SetActive (true);
+        }
+        
+        GameManager.instance.unitInPlacement = null;
+        Camera.main.GetComponent<Camera> ().orthographic = false;
+        DesactivateInfluenceZones ();
     }
 
     void Start () {
@@ -70,7 +91,20 @@ public class Terrain : MonoBehaviour {
         // Création et placement des sanctuaires
         GameObject sanctuaryP1 = (GameObject)Instantiate (SanctuaryPrefab, new Vector3 (2, 0.5f, 0), Quaternion.identity);
         GameObject sanctuaryP2 = (GameObject)Instantiate (SanctuaryPrefab, new Vector3 (2, 0.5f, 9), Quaternion.identity);
-        PlaceUnitInTileMap (sanctuaryP1);
-        PlaceUnitInTileMap (sanctuaryP2);
+        PlaceInTileMap (sanctuaryP1);
+        PlaceInTileMap (sanctuaryP2);
+        CreateInfluenceZones (sanctuaryP1);
+        CreateInfluenceZones (sanctuaryP2);
+    }
+
+    private void ToggleInfluenceZones (bool activate = true) {
+        for (int i = 0; i < tileMap.nbColumns; ++i) {
+            for (int j = 0; j < tileMap.nbLines; ++j) {
+                GameObject placeable = tileMap.tiles[i, j].Placeable;
+                if (null != placeable && null != placeable.GetComponent<Building> ()) {
+                    tileMap.tiles[i, j].Placeable.transform.GetChild (0).gameObject.SetActive (activate);
+                }
+            }
+        }
     }
 }
