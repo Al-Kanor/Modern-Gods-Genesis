@@ -3,14 +3,19 @@ using System.Collections;
 
 public class Placeable : MonoBehaviour {
     #region Attributs publics
-    public GameObject card;
     #endregion
 
     #region Attributs privés
+    private Card card = null;
     private bool isToP1;
     #endregion
 
     #region Accesseurs
+    public Card Card {
+        get { return card; }
+        set { card = value; }
+    }
+
     public bool IsToP1 {
         get { return isToP1; }
         set { isToP1 = value; }
@@ -34,8 +39,8 @@ public class Placeable : MonoBehaviour {
         );
     }
 
-     virtual protected void FixedUpdate () {
-         if (GameManager.ActionEnum.UNIT_IN_PLACEMENT == GameManager.instance.Action && gameObject == GameManager.instance.unitInPlacement) {
+    virtual protected void FixedUpdate () {
+        if (GameManager.ActionEnum.UNIT_IN_PLACEMENT == GameManager.instance.Action && this == GameManager.instance.placeableInPlacement) {
             transform.position = InputManager.MouseWorldPosition ();
             Clamp ();
         }

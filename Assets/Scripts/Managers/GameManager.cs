@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour {
     #endregion
 
     #region Attributs publics
-    public GameObject unitInPlacement = null;
+    public Placeable placeableInPlacement = null;
     #endregion
 
     #region Attributs privés
@@ -28,13 +28,13 @@ public class GameManager : MonoBehaviour {
         set {
             switch (value) {
                 case ActionEnum.THINKING:
-                    unitInPlacement = null;
+                    placeableInPlacement = null;
                     Camera.main.GetComponent<Camera> ().orthographic = false;
-                    Terrain.instance.DesactivateInfluenceZones ();
+                    TileMap.instance.DesactivateInfluenceZones ();
                     break;
                 case ActionEnum.UNIT_IN_PLACEMENT:
                     Camera.main.GetComponent<Camera> ().orthographic = true;
-                    Terrain.instance.ActivateInfluenceZones ();
+                    TileMap.instance.ActivateInfluenceZones ();
                     break;
             }
 
@@ -82,8 +82,16 @@ public class GameManager : MonoBehaviour {
     #region Méthodes privées
     void FixedUpdate () {
         Debug.Log (action);
-        if (ActionEnum.END_OF_TURN == action) {
-            Action = ActionEnum.THINKING;
+        switch (action) {
+            case ActionEnum.BEGIN_OF_MATCH:
+                Action = ActionEnum.BEGIN_OF_TURN;
+                break;
+            case ActionEnum.BEGIN_OF_TURN:
+                Action = ActionEnum.THINKING;
+                break;
+            case ActionEnum.END_OF_TURN:
+                Action = ActionEnum.BEGIN_OF_TURN;
+                break;
         }
     }
     #endregion

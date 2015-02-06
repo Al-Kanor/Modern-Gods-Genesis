@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class InfluenceZone {
+public class InfluenceZone : MonoBehaviour {
     #region Attribut privés
     private bool isToP1 = false;
     private bool isToP2 = false;
