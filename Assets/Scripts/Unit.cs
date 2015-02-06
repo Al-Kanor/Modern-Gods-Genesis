@@ -6,7 +6,6 @@ public class Unit : Placeable {
     public int strenght = 1;    // Force
     public int moves = 1; // Nombre de cases parcourues par tour ("vitesse" sur la carte)
     public int lifes = 1;   // Points de vie
-    public GameObject card;
     #endregion
 
     #region Attributs privés

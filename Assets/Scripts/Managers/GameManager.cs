@@ -4,6 +4,8 @@ using System.Collections;
 public class GameManager : MonoBehaviour {
     #region Enum publics
     public enum ActionEnum {
+        BEGIN_OF_MATCH,
+        BEGIN_OF_TURN,
         END_OF_TURN,
         MOVE_UNITS,
         THINKING,
@@ -16,7 +18,7 @@ public class GameManager : MonoBehaviour {
     #endregion
 
     #region Attributs privés
-    private ActionEnum action = ActionEnum.THINKING;
+    private ActionEnum action = ActionEnum.BEGIN_OF_MATCH;
     private bool isP1Turn = true;
     #endregion
 

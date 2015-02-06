@@ -2,6 +2,10 @@
 using System.Collections;
 
 public class Placeable : MonoBehaviour {
+    #region Attributs publics
+    public GameObject card;
+    #endregion
+
     #region Attributs privés
     private bool isToP1;
     #endregion
@@ -9,6 +13,7 @@ public class Placeable : MonoBehaviour {
     #region Accesseurs
     public bool IsToP1 {
         get { return isToP1; }
+        set { isToP1 = value; }
     }
     #endregion
 
@@ -17,6 +22,10 @@ public class Placeable : MonoBehaviour {
     #endregion
 
     #region Méthodes privées
+    void Awake () {
+        isToP1 = GameManager.instance.GetComponent<GameManager> ().IsP1Turn;
+    }
+    
     void Clamp () {
         transform.position = new Vector3 (
             Mathf.Round (transform.position.x),
@@ -30,10 +39,6 @@ public class Placeable : MonoBehaviour {
             transform.position = InputManager.MouseWorldPosition ();
             Clamp ();
         }
-    }
-
-    void Start () {
-        isToP1 = GameManager.instance.GetComponent<GameManager> ().IsP1Turn;
     }
     #endregion
 }
