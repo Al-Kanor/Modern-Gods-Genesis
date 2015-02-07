@@ -42,6 +42,18 @@ public class TileMap : MonoBehaviour {
     }
     #endregion
 
+    // Lance la production de tous les bâtiments du joueur actif
+    public void LaunchProduction () {
+        for (int x = 0; x < nbColumns; ++x) {
+            for (int z = 0; z < nbLines; ++z) {
+                if (null != tiles[x, z].Placeable && null != tiles[x, z].Placeable.gameObject.GetComponent<Building> () && tiles[x, z].Placeable.IsToP1 == GameManager.instance.IsP1Turn) {
+                    Building building = tiles[x, z].Placeable.gameObject.GetComponent<Building> ();
+                    GameManager.instance.ActivePlayer.AddResources (building.bricksProduction, building.goldProduction, building.orbsProduction);
+                }
+            }
+        }
+    }
+
     #region Méthodes privées
     void Awake () {
         #region Singleton

@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour {
 
     #region Attributs privés
     private ActionEnum action = ActionEnum.BEGIN_OF_MATCH;
+    private Player p1;
+    private Player p2;
     private bool isP1Turn = true;
     #endregion
 
@@ -27,6 +29,9 @@ public class GameManager : MonoBehaviour {
         get { return action; }
         set {
             switch (value) {
+                case ActionEnum.BEGIN_OF_TURN:
+                    TileMap.instance.LaunchProduction ();
+                    break;
                 case ActionEnum.THINKING:
                     placeableInPlacement = null;
                     Camera.main.GetComponent<Camera> ().orthographic = false;
@@ -40,6 +45,10 @@ public class GameManager : MonoBehaviour {
 
             action = value;
         }
+    }
+
+    public Player ActivePlayer {
+        get { return isP1Turn ? p1 : p2; }
     }
 
     public bool IsP1Turn {
