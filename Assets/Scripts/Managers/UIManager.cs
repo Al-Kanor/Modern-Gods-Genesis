@@ -17,4 +17,8 @@ public class UIManager : MonoBehaviour {
         DontDestroyOnLoad (this);
     }
     #endregion
+
+    #region Méthodes publiques
+    
+    #endregion
 }

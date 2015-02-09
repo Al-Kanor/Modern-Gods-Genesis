@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour {
             switch (value) {
                 case ActionEnum.BEGIN_OF_TURN:
                     TileMap.instance.LaunchProduction ();
+                    MatchUI.instance.UpdateResources ();
                     break;
                 case ActionEnum.THINKING:
                     placeableInPlacement = null;
@@ -102,6 +103,12 @@ public class GameManager : MonoBehaviour {
                 Action = ActionEnum.BEGIN_OF_TURN;
                 break;
         }
+    }
+
+    void Start () {
+        // Création des joueurs
+        p1 = new Player ();
+        p2 = new Player ();
     }
     #endregion
 }
