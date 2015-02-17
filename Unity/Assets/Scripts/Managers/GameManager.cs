@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using PlayerIOClient;
+using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
     #region Enum publics
@@ -91,7 +93,7 @@ public class GameManager : MonoBehaviour {
 
     #region Méthodes privées
     void FixedUpdate () {
-        Debug.Log (action);
+        //Debug.Log (action);
         switch (action) {
             case ActionEnum.BEGIN_OF_MATCH:
                 Action = ActionEnum.BEGIN_OF_TURN;
