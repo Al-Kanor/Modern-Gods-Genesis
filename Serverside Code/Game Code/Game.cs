@@ -5,7 +5,7 @@ using System.Collections;
 using PlayerIO.GameLibrary;
 using System.Drawing;
 
-namespace MushroomsUnity3DExample {
+namespace ModernGodsGenesis {
 	public class Player : BasePlayer {
 		public float posx = 0;
 		public float posz = 0;
@@ -45,14 +45,12 @@ namespace MushroomsUnity3DExample {
 			}
 
 			// respawn new toads each 5 seconds
-			AddTimer(respawntoads, 5000);
+			AddTimer(Respawntoads, 5000);
 			// reset game every 2 minutes
-			AddTimer(resetgame, 120000);
-
-
+			AddTimer(Resetgame, 120000);
 		}
 
-		private void resetgame() {
+		private void Resetgame() {
 			// scoring system
 			Player winner = new Player();
 			int maxscore = -1;
@@ -77,7 +75,7 @@ namespace MushroomsUnity3DExample {
 			Broadcast("ToadCount", 0);
 		}
 
-		private void respawntoads() {
+		private void Respawntoads() {
 			if(Toads.Count == 10)
 				return;
 

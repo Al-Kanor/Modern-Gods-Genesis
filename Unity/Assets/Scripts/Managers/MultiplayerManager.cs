@@ -26,7 +26,7 @@ public class MultiplayerManager : MonoBehaviour {
     public string ipDevServ = "192.168.1.3";
 	
 	//Here it begins 
-	public void startConnection(){
+	public void StartConnection(){
 		
 		string playerId = SystemInfo.deviceUniqueIdentifier;
 		
@@ -41,7 +41,7 @@ public class MultiplayerManager : MonoBehaviour {
 			null,
 			null,				
 			delegate(Client client) { 
-			    successfullConnect (client);
+			    SuccessfullConnect (client);
 		    },
 		    delegate(PlayerIOError error) {
 			    Debug.Log ("Error connecting: " + error.ToString ());				
@@ -49,7 +49,7 @@ public class MultiplayerManager : MonoBehaviour {
 		);
 	}
 	
-	void successfullConnect(Client client){
+	void SuccessfullConnect(Client client){
 		Debug.Log("Successfully connected to Player.IO");
 		
 		if(developmentServer) {
@@ -75,7 +75,7 @@ public class MultiplayerManager : MonoBehaviour {
 			    Debug.Log("Joined Room : " + roomId);
 			    // We successfully joined a room so set up the message handler
 			    pioconnection = connection;
-			    pioconnection.OnMessage += handlemessage;
+			    pioconnection.OnMessage += Handlemessage;
 			    pioconnection.OnDisconnect += disconnected; 
 			    joinedroom = true;	
 		    },
@@ -87,7 +87,7 @@ public class MultiplayerManager : MonoBehaviour {
 		pioclient = client;
 	}
 
-	public void disconnect(){
+	public void Disconnect(){
 		if (!pioconnection.Connected) return;
 		pioconnection.Disconnect();	
 	}
@@ -123,11 +123,11 @@ public class MultiplayerManager : MonoBehaviour {
 		msgList.Clear();
 	}
 	
-	void handlemessage(object sender, PlayerIOClient.Message m) {
+	void Handlemessage(object sender, PlayerIOClient.Message m) {
 		msgList.Add(m);
 	}
 	
-	void joinGameRoom (string roomId)
+	void JoinGameRoom (string roomId)
 	{
 		pioclient.Multiplayer.CreateJoinRoom (
 			roomId,				//Room is the Alliance of the player 
@@ -139,7 +139,7 @@ public class MultiplayerManager : MonoBehaviour {
 			    Debug.Log("Joined Room : " + roomId);
 			    // We successfully joined a room so set up the message handler
 			    pioconnection = connection;
-			    pioconnection.OnMessage += handlemessage;
+			    pioconnection.OnMessage += Handlemessage;
 			    pioconnection.OnDisconnect += disconnected; 
 			    joinedroom = true;
 		    },
@@ -151,7 +151,7 @@ public class MultiplayerManager : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		startConnection ();
+		StartConnection ();
 	}
 	
 	void OnLevelWasLoaded(int level) {
@@ -160,13 +160,13 @@ public class MultiplayerManager : MonoBehaviour {
 		}
 	}
 	
-	//METHODS SENT TO SERVER
-	public void sendStart(){
+	// METHODS SENT TO SERVER
+	public void SendStart(){
 		Debug.Log ("Sending Start to Server");
-		pioconnection.Send("start");
+		pioconnection.Send("Start");
 	}
 	
-	public void sendChat(string text){
+	public void SendChat(string text){
 		pioconnection.Send ("Chat", text);
 	}
 }
